@@ -27,12 +27,12 @@ class listadapter (var list: ArrayList<Student>): BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.activity_list_adapter, parent, false)
-        val tvName = view.findViewById<TextView>(R.id.tvname)
+            .inflate(R.layout.list, parent, false)
+        val tvName = view.findViewById<TextView>(R.id.tvName)
         tvName.setText(list[position].name.toString())
-        val tvRollno = view.findViewById<TextView>(R.id.tvrollno)
-        .setText(list[position].rollNo.toString())
-        val tvSubject = view.findViewById<TextView>(R.id.tvsubject)
+        val tvRollno = view.findViewById<TextView>(R.id.tvRollNo)
+        tvRollno.setText(list[position].rollNo.toString())
+        val tvSubject = view.findViewById<TextView>(R.id.tvSubject)
         tvSubject.setText(list[position].subject.toString())
         return view
     }

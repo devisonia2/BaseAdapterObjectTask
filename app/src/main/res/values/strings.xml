@@ -5,4 +5,6 @@
     <string name="name">Name</string>
     <string name="rollno">Rollno</string>
     <string name="subject">Subject</string>
+    <string name="enter_your_rollno">Enter Your Rollno</string>
+    <string name="enter_your_name">Enter Your Name</string>
 </resources>

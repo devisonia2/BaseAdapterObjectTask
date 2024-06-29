@@ -1,8 +1,13 @@
 package com.sonia.studentobjecttask
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.ListAdapter
 import com.sonia.studentobjecttask.databinding.ActivityMainBinding
+import com.sonia.studentobjecttask.databinding.CustomdialogBinding
 
 class MainActivity : AppCompatActivity() {
     var binding: ActivityMainBinding? = null
@@ -25,24 +31,44 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        studentList.add(Student(rollNo = 1, "Raj", "English"))
-        studentList.add(Student(rollNo = 2, "Rohit", "Hindi"))
-        studentList.add(Student(rollNo = 3, "Aryan", "Maths"))
         binding?.listview?.adapter = listAdapter
-
-        binding?.listview?.setOnItemClickListener { parent, view, position, id ->
-            Toast.makeText(this, "Position $position", Toast.LENGTH_LONG).show()
-            Log.e(TAG, "position clicked ${binding?.listview?.getItemAtPosition(position)} ${
-                    binding?.listview?.getItemAtPosition(position)
-                }"
-            )
-        }
-        binding?.btnflaot?.setOnClickListener {
-            studentList.add(Student(4, "Khushi", "Science"))
-            studentList.add(Student(5, "Anjali", "Punjabi"))
-            studentList.add(Student(6, "Pranav", "Social Science"))
-
-            listAdapter.notifyDataSetChanged()
+            binding?.btnfab?.setOnClickListener {
+                var dialog = Dialog(this)
+                dialog.setContentView(R.layout.customdialog)
+                dialog.show()
+                var etName = dialog.findViewById<EditText>(R.id.etname)
+                var etRollno = dialog.findViewById<EditText>(R.id.etrollno)
+                var etSubject = dialog.findViewById<EditText>(R.id.etsubject)
+                var btnupdate = dialog.findViewById<Button>(R.id.btnupdate)
+                dialog.window?.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                btnupdate?.setOnClickListener {
+                    if (etName?.text?.toString().isNullOrEmpty()) {
+                        etName?.error = "Enter Your Name "
+                    } else if (etRollno?.text?.toString().isNullOrEmpty()) {
+                        etRollno?.error = "Enter Your rollno "
+                    } else if (etSubject?.text?.toString().isNullOrEmpty()) {
+                        etSubject?.error = "Enter Your subject "
+                    } else {
+                        studentList.add(
+                            Student(
+                                etName.text.toString().toInt(),
+                                etRollno.text.toString(),
+                                etSubject.text.toString()
+                            )
+                        )
+                    }
+                    listAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
+            }
+            binding?.listview?.setOnItemClickListener { parent, view, position, id ->
+                studentList.removeAt(position)
+                listAdapter.notifyDataSetChanged()
+            }
         }
     }
-}
+
+

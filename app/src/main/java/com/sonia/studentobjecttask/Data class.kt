@@ -6,6 +6,6 @@ var name : String?= "",
 var subject : String?= "",
 ){
     override fun toString(): String {
-        return "$name\n$rollNo $subject"
+        return "$rollNo\n$name $subject"
     }
 }
