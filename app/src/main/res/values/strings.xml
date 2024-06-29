@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Student Object Task</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="rollno">Rollno</string>
+    <string name="subject">Subject</string>
+</resources>
