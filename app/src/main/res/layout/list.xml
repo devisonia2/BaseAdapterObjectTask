@@ -9,13 +9,13 @@
         android:text="@string/name"
         android:id="@+id/tvName"
         android:textSize="20sp"
-        android:layout_margin="15dp"/>
+        android:layout_margin="10dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvRollNo"
         android:textSize="20sp"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:text="@string/rollno"/>
 
     <TextView
@@ -24,7 +24,7 @@
         android:id="@+id/tvSubject"
         android:text="@string/subject"
         android:textSize="20sp"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         />
 
 </LinearLayout>

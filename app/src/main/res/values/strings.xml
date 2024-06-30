@@ -7,4 +7,6 @@
     <string name="subject">Subject</string>
     <string name="enter_your_rollno">Enter Your Rollno</string>
     <string name="enter_your_name">Enter Your Name</string>
+    <string name="enter_your_subject">Enter Your Subject</string>
+    <string name="submit">Submit</string>
 </resources>

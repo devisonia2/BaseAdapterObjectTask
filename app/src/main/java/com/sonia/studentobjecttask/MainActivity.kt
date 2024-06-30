@@ -2,6 +2,7 @@ package com.sonia.studentobjecttask
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.ProgressDialog.show
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -31,44 +32,95 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        binding?.listview?.adapter = listAdapter
-            binding?.btnfab?.setOnClickListener {
-                var dialog = Dialog(this)
-                dialog.setContentView(R.layout.customdialog)
-                dialog.show()
-                var etName = dialog.findViewById<EditText>(R.id.etname)
-                var etRollno = dialog.findViewById<EditText>(R.id.etrollno)
-                var etSubject = dialog.findViewById<EditText>(R.id.etsubject)
-                var btnupdate = dialog.findViewById<Button>(R.id.btnupdate)
-                dialog.window?.setLayout(
+        binding?.listview?.setOnItemClickListener { parent, view, position, id ->
+            var dialogBinding = CustomdialogBinding.inflate(layoutInflater)
+            var dialog = Dialog(this).apply {
+                setContentView(dialogBinding.root)
+                window?.setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                btnupdate?.setOnClickListener {
-                    if (etName?.text?.toString().isNullOrEmpty()) {
-                        etName?.error = "Enter Your Name "
-                    } else if (etRollno?.text?.toString().isNullOrEmpty()) {
-                        etRollno?.error = "Enter Your rollno "
-                    } else if (etSubject?.text?.toString().isNullOrEmpty()) {
-                        etSubject?.error = "Enter Your subject "
-                    } else {
-                        studentList.add(
-                            Student(
-                                etName.text.toString().toInt(),
-                                etRollno.text.toString(),
-                                etSubject.text.toString()
-                            )
+                show()
+            }
+            val update: String = "update"
+            dialogBinding.btnsubmit.setText(update)
+            val rollno: String = studentList[position].rollNo.toString()
+            dialogBinding.etrollno.setText(rollno)
+            val name: String = studentList[position].name.toString()
+            dialogBinding.etname.setText(name)
+            val subject: String = studentList[position].subject.toString()
+            dialogBinding.etsubject.setText(subject)
+            if (dialogBinding.etrollno.text.trim().toString().isNullOrEmpty()) {
+                dialogBinding.etrollno.error = "Enter your RollNo"
+            } else if (dialogBinding.etname.text.trim().toString().isNullOrEmpty()) {
+                dialogBinding.etname.error = "Enter your Name"
+            } else if (dialogBinding.etsubject.text.trim().toString().isNullOrEmpty()) {
+                dialogBinding.etsubject.error = "Enter your Subject"
+            } else {
+                studentList[position] = Student(
+                    dialogBinding.etrollno.text.toString().toInt(),
+                    dialogBinding.etname.text.trim().toString(),
+                    dialogBinding.etsubject.text.trim().toString()
+                )
+                listAdapter.notifyDataSetChanged()
+                dialog.dismiss()
+            }
+            dialog.show()
+        }
+        binding?.listview?.setOnItemLongClickListener { parent, view, position, id ->
+            AlertDialog.Builder(this@MainActivity).apply {
+                setTitle("Delete Item")
+                setMessage("Do you want to delete the item?")
+                setCancelable(false)
+                setNegativeButton("No") { _, _ ->
+                    setCancelable(true)
+                }
+                setPositiveButton("Yes") { _, _ ->
+                    Toast.makeText(this@MainActivity, "The item is  deleted", Toast.LENGTH_SHORT)
+                        .show()
+                    studentList.removeAt(position)
+                    listAdapter.notifyDataSetChanged()
+                }
+                show()
+            }
+            return@setOnItemLongClickListener true
+        }
+        binding?.listview?.adapter = listAdapter
+
+        binding?.btnfab?.setOnClickListener {
+            var dialogBinding= CustomdialogBinding.inflate(layoutInflater)
+            var dialog= Dialog(this).apply{
+                setContentView(dialogBinding.root)
+                show()
+            }
+            dialog.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialogBinding.btnsubmit.setOnClickListener {
+                if (dialogBinding.etrollno.text?.toString().isNullOrEmpty()) {
+                    dialogBinding.etrollno.error = "Enter Your rollno "
+                } else if (  dialogBinding.etname.text?.toString().isNullOrEmpty()) {
+                    dialogBinding.etname.error = "Enter Your Name "
+                } else if (  dialogBinding.etsubject.text?.toString().isNullOrEmpty()) {
+                    dialogBinding.etsubject.error = "Enter Your subject "
+                } else {
+                    studentList.add(
+                        Student(
+                            dialogBinding. etrollno.text.toString().trim().toInt(),
+                            dialogBinding.etname.text.toString(),
+                            dialogBinding.etsubject.text.toString()
                         )
-                    }
+                    )
                     listAdapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
             }
-            binding?.listview?.setOnItemClickListener { parent, view, position, id ->
-                studentList.removeAt(position)
-                listAdapter.notifyDataSetChanged()
-            }
+            dialog.show()
         }
     }
+}
+
+
 
 
